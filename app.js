@@ -9,6 +9,8 @@ const blogsRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const healthRouter = require('./controllers/health')
+const versionRouter = require('./controllers/version')
 
 logger.info('connecting to', config.MONGODB_URI)
 
@@ -29,6 +31,8 @@ app.use(express.json())
 app.use('/api/login', loginRouter)
 app.use('/api/users', userRouter)
 app.use('/api/blogs', blogsRouter)
+app.use('/api/health', healthRouter)
+app.use('/api/version', versionRouter)
 
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/testing')
