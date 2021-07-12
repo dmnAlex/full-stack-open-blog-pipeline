@@ -25,6 +25,7 @@ jobs:
       - name: npm install
         run: npm install && cd ./client && npm install
       - name: lint
+        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
         run: npm run lint && cd ./client && npm run eslint
       - name: build
         run: cd ./client && npm run build
@@ -52,6 +53,7 @@ jobs:
           HD_MONGODB_URI: ${{ secrets.MONGODB_URI }}
           HD_SECRET: ${{ secrets.SECRET }}
           HD_SKIP_PREFLIGHT_CHECK: true
+      - uses: actions/checkout@v2
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: anothrNick/github-tag-action@18284c78f6ac68868d5341f57c4f971fb5b7605c
