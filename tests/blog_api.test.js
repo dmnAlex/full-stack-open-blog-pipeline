@@ -192,7 +192,7 @@ describe('users tests', () => {
       password: '32'
     }
 
-    const usersAtStart = await helper.usersInDb()
+    await helper.usersInDb()
 
     await api
       .post('/api/users')
