@@ -34,5 +34,5 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: npm run start:test
-          command: cd ./client && npm run test:e2e
+          command: cd ./client && npm run cypress:run
           wait-on: http://localhost:${{env.PORT}}
