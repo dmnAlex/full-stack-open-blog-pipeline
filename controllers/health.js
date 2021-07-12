@@ -1,6 +1,6 @@
 const healthRouter = require('express').Router()
 
-healthRouter.get('/', (_req, res) => {
+healthRouter.get('/', async (_req, res) => {
   res.send('ok')
 })
 
