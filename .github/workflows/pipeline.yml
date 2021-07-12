@@ -29,8 +29,10 @@ jobs:
       - name: build
         run: cd ./client && npm run build
       - name: test
+        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
         run: npm run test && cd ./client && npm run test
       - name: e2e tests
+        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
         uses: cypress-io/github-action@v2
         with:
           start: npm run start:test
