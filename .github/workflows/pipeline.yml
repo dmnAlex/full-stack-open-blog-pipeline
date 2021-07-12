@@ -14,7 +14,7 @@ jobs:
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-      SECRET: "911"
+      SECRET: ${{ secrets.SECRET }}
       PORT: 3001
       SKIP_PREFLIGHT_CHECK: true
     steps:
@@ -35,4 +35,4 @@ jobs:
         with:
           start: npm run start:test
           command: cd ./client && npm run test:e2e
-          wait-on: http://localhost:$PORT
+          wait-on: `http://localhost:${PORT}`
