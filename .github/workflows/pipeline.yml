@@ -14,7 +14,7 @@ jobs:
     env:
       MONGODB_URI: ${{ secrets.MONGODB_URI }}
       TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-      SECRET: ${{ secrets.SECRET }}
+      SECRET: "911"
       PORT: 3001
       SKIP_PREFLIGHT_CHECK: true
     steps:
