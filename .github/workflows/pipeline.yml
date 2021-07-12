@@ -26,3 +26,13 @@ jobs:
         run: npm install && cd ./client && npm install
       - name: lint
         run: npm run lint && cd ./client && npm run eslint
+      - name: build
+        run: cd ./client && npm run build
+      - name: test
+        run: npm run test && cd ./client && npm run test
+      - name: e2e tests
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run start:test
+          command: cd ./client && npm run test:e2e
+          wait-on: http://localhost:$PORT
