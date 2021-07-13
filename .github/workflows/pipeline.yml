@@ -60,3 +60,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+      - name: deployment notification
+        if: ${{ steps.deploy_step.conclusion == 'success' && !contains(join(github.event.commits.*.message, ' '), '#sn') }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: commit, author, took
+          custom_payload: |
+            {
+              attachments: [{
+                color: "good",
+                text: `a new version deployed to https://dmnalex-blog-pipeline.herokuapp.com/ (${process.env.AS_COMMIT}) by ${process.env.AS_AUTHOR} build took ${process.env.AS_TOOK}`
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: error notification
+        if: ${{ failure() && !contains(join(github.event.commits.*.message, ' '), '#sn') }}
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo, message, commit, author, took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
