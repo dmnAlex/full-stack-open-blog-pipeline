@@ -5,20 +5,31 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 describe('blogs tests', () => {
   let token
   beforeEach(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+
+    const rootUser = {
+      username: 'root',
+      name: 'Alex',
+      password: '12345'
+    }
+
+    const passwordHash = await bcrypt.hash(rootUser.password, 10)
+    const user = new User({
+      username: rootUser.username,
+      name: rootUser.name,
+      passwordHash
+    })
+    await user.save()
 
     const blogsObjects = helper.initialBlogs.map(blog => new Blog(blog))
     const promiseArray = blogsObjects.map(blog => blog.save())
     await Promise.all(promiseArray)
-
-    const rootUser = {
-      username: 'root',
-      password: '12345'
-    }
 
     const res = await api
       .post('/api/login')
@@ -51,6 +62,7 @@ describe('blogs tests', () => {
     expect(contents[0]).toBeDefined()
   })
 
+  // Problem
   test('a valid blog can be added', async () => {
     const newBlog = {
       title: 'AnEntirelyNewBlog',
@@ -96,6 +108,7 @@ describe('blogs tests', () => {
     expect(contents).not.toContain('AnEntirelyNewBlog2')
   })
 
+  // Problem
   test('if the likes property is missing from the request, it will default to the value 0', async () => {
     const newBlog = {
       title: 'AnEntirelyNewBlog',
@@ -115,6 +128,7 @@ describe('blogs tests', () => {
     expect(response.body[helper.initialBlogs.length].likes).toBe(0)
   })
 
+  // Problem
   test('a blog without title and url properties is not added', async () => {
     const newBlog = {
       author: 'SomeNewGuy',
@@ -142,7 +156,7 @@ describe('blogs tests', () => {
       .expect(401)
 
     const blogsAtEnd = await helper.blogsInDb()
-    
+
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     const contents = blogsAtEnd.map(item => item.title)
     expect(contents).toContain(blogToDelete.title)
