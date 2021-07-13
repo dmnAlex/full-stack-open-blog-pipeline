@@ -62,7 +62,6 @@ describe('blogs tests', () => {
     expect(contents[0]).toBeDefined()
   })
 
-  // Problem
   test('a valid blog can be added', async () => {
     const newBlog = {
       title: 'AnEntirelyNewBlog',
@@ -108,7 +107,6 @@ describe('blogs tests', () => {
     expect(contents).not.toContain('AnEntirelyNewBlog2')
   })
 
-  // Problem
   test('if the likes property is missing from the request, it will default to the value 0', async () => {
     const newBlog = {
       title: 'AnEntirelyNewBlog',
@@ -128,7 +126,6 @@ describe('blogs tests', () => {
     expect(response.body[helper.initialBlogs.length].likes).toBe(0)
   })
 
-  // Problem
   test('a blog without title and url properties is not added', async () => {
     const newBlog = {
       author: 'SomeNewGuy',
