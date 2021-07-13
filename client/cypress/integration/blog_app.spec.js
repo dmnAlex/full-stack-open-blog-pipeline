@@ -13,7 +13,7 @@ describe('Blog app', function () {
   })
 
   it('Login form is shown', function () {
-    cy.contains('Login in to application')
+    cy.contains('Login in to Application')
   })
 
   describe('Login', function () {
