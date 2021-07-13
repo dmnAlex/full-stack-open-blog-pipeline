@@ -39,6 +39,8 @@ jobs:
           start: npm run start:test
           command: npm run e2e
           wait-on: http://localhost:${{env.PORT}}
+      - name: modify gitignore
+        run: sed -i '/build*/d' .gitignore && cat .gitignore
       - name: deploy to heroku
         id: deploy_step
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#sd') }}
