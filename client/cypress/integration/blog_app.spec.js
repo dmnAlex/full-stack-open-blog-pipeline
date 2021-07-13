@@ -99,7 +99,6 @@ describe('Blog app', function () {
         })
 
         cy.get('.blog').then(blogs => {
-          //const x = blogs.map((i, blog) => blog.textContent)
           const array = [...blogs.map((i, blog) => Number(blog.textContent.match(/\d+(?=\slike)/)))]
           const result = array.reduce((a, c, i) => a && i > 0 ? c < array[i - 1] : true, true)
           expect(result).to.true

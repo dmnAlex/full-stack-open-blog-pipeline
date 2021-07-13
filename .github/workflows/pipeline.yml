@@ -49,6 +49,7 @@ jobs:
           heroku_email: "logical@ngs.ru"
           healthcheck: "https://dmnalex-blog-pipeline.herokuapp.com/api/health"
           checkstring: "ok"
+          rollbackonhealthcheckfailed: true
         env:
           HD_MONGODB_URI: ${{ secrets.MONGODB_URI }}
           HD_SECRET: ${{ secrets.SECRET }}
