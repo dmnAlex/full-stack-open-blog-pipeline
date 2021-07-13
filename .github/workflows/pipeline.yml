@@ -25,15 +25,15 @@ jobs:
       - name: npm install
         run: npm install && cd ./client && npm install
       - name: lint
-        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
+        if: ${{ !contains(join(github.event.commits.*.message, ' '), '#st') }}
         run: npm run lint && cd ./client && npm run eslint
       - name: build
         run: cd ./client && npm run build
       - name: test
-        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
+        if: ${{ !contains(join(github.event.commits.*.message, ' '), '#st') }}
         run: npm run test && cd ./client && npm run test
       - name: e2e tests
-        if: ${{ contains(join(github.event.commits.*.message, ' '), '#test') }}
+        if: ${{ !contains(join(github.event.commits.*.message, ' '), '#st') }}
         uses: cypress-io/github-action@v2
         with:
           start: npm run start:test
@@ -41,7 +41,7 @@ jobs:
           wait-on: http://localhost:${{env.PORT}}
       - name: deploy to heroku
         id: deploy_step
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#sd') }}
         uses: akhileshns/heroku-deploy@v3.8.8
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
@@ -55,7 +55,7 @@ jobs:
           HD_SKIP_PREFLIGHT_CHECK: true
       - uses: actions/checkout@v2
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#sd') }}
         uses: anothrNick/github-tag-action@18284c78f6ac68868d5341f57c4f971fb5b7605c
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
